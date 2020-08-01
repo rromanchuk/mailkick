@@ -8,12 +8,16 @@ module Mailkick
     end
 
     def unsubscribe
-      Mailkick.opt_out(@options)
+      ActiveRecord::Base.connected_to(role: :writing) do
+        Mailkick.opt_out(@options)
+      end
       redirect_to subscription_path(params[:id])
     end
 
     def subscribe
-      Mailkick.opt_in(@options)
+      ActiveRecord::Base.connected_to(role: :writing) do
+        Mailkick.opt_in(@options)
+      end
       redirect_to subscription_path(params[:id])
     end
 
